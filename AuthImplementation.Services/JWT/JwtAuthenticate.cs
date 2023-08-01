@@ -1,14 +1,22 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using AuthImplementation.Model.Dtos.Response;
 using AuthImplementation.Model.Entities;
 using AuthImplementation.Model.Enums;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthImplementation.Services.JWT
 {
     public class JwtAuthenticate : IJwtAuthenticate
     {
+        private readonly IConfiguration _configuration;
+        public JwtAuthenticate(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
         public async Task<JwtToken> GenerateTokenAsync(User user, string expiration = null, IList<Claim> claims = null)
         {
 
@@ -31,6 +39,13 @@ namespace AuthImplementation.Services.JWT
                 claimsBuilder.AddRange(claims);
 
             return claimsBuilder;
+        }
+
+        private async Task<SigningCredentials> GetSigningCredentialsAsync()
+        {
+            var jwtSettings = _configuration.GetSection("JwtConfig");
+            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["key"]));
+            return new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         }
     }
 }
