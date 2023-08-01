@@ -4,8 +4,11 @@ using AuthImplementation.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.InjectServices();
+
 builder.Services.AddControllers();
+builder.Services.InjectServices();
+builder.Services.AddDbConnecion();
+builder.Services.ConfigureIdentity();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
