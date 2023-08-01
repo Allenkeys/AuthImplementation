@@ -47,5 +47,19 @@ namespace AuthImplementation.Services.JWT
             var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["key"]));
             return new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
         }
+
+        private async Task<JwtSecurityToken> GenerateSecurityTokenAsync(SigningCredentials credentials, IList<Claim> claims)
+        {
+            var jwtSettings = _configuration.GetSection("JwtConfig");
+
+            return new JwtSecurityToken
+                (
+                    issuer: jwtSettings["Issuer"],
+                    audience: jwtSettings["Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddHours(double.Parse(jwtSettings["Expires"])),
+                    signingCredentials: credentials
+                );
+        }
     }
 }
