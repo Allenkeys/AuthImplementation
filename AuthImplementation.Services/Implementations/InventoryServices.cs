@@ -4,7 +4,12 @@ namespace AuthImplementation.Services.Implementations;
 
 public class InventoryServices : IInventoryServices
 {
-    public Task<IEnumerable<string>> GetInventoryAsync()
+    public async Task<IEnumerable<string>> GetAllInventoryAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<string> GetInventoryAsync(string id)
     {
         throw new NotImplementedException();
     }

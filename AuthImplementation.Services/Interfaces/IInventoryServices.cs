@@ -2,5 +2,6 @@
 
 public interface IInventoryServices
 {
-    Task<IEnumerable<string>> GetInventoryAsync();
+    Task<string> GetInventoryAsync(string id);
+    Task<IEnumerable<string>> GetAllInventoryAsync();
 }
