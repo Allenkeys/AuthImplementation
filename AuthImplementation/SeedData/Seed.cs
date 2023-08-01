@@ -11,7 +11,6 @@ public static class Seed
         ApplicationDbContext db = builder.ApplicationServices.CreateScope().ServiceProvider
             .GetRequiredService<ApplicationDbContext>();
 
-        db.Database.EnsureCreated();
         if (db.Roles.Any())
             return;
         await db.Roles.AddRangeAsync(SeedRoles());
