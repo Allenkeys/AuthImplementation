@@ -1,6 +1,7 @@
 using AuthImplementation.Model.Dtos.Request;
 using AuthImplementation.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AuthImplementation.Controllers;
 
@@ -16,6 +17,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Sign-Up", Name = "sign-up")]
+    [SwaggerOperation(Summary = "Register user")]
     public async Task<IActionResult> SignUp(CreateUserRequest request)
     {
         var response = await _auth.SignUpAsync(request);
@@ -23,6 +25,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("Login-A-User", Name = "login-a-user")]
+    [SwaggerOperation(Summary = "Login with user credentials")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
         var response = await _auth.LoginAsync(request);

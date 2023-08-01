@@ -1,5 +1,6 @@
 using Microsoft.OpenApi.Models;
 using AuthImplementation.Extensions;
+using AuthImplementation.SeedData;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,5 +32,15 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+try
+{
+    await app.SeedAll();
+}
+catch (Exception)
+{
+
+	throw;
+}
 
 app.Run();
