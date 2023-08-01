@@ -19,7 +19,21 @@ namespace AuthImplementation.Services.JWT
         }
         public async Task<JwtToken> GenerateTokenAsync(User user, string expiration = null, IList<Claim> claims = null)
         {
+            var signingCredentials = await GetSigningCredentialsAsync();
 
+            var allClaims = await GetClaimsAsync(user, claims);
+
+            var securityToken = await GenerateSecurityTokenAsync(signingCredentials, allClaims);
+
+            var jwtToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
+
+            var jwtSettings = _configuration.GetSection("JwtConfig");
+
+            return new JwtToken()
+            {
+                Token = jwtToken,
+                Expiration = DateTime.Now.AddHours(double.Parse(jwtSettings["Expires"]))
+            };
         }
 
         private async Task<IList<Claim>> GetClaimsAsync(User user, IList<Claim> claims = null)
