@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using AuthImplementation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,11 @@ builder.Services.InjectServices();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.EnableAnnotations();
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Auth API", Version = "v1" });
+});
 
 var app = builder.Build();
 
