@@ -1,17 +1,19 @@
 ﻿using AuthImplementation.Model.Dtos.Request;
 using AuthImplementation.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace AuthImplementation.Controllers;
 
+[Authorize(Roles = "Admin, BackOffice")]
 [Route("api/[controller]")]
 [ApiController]
-public class InventoryController : ControllerBase
+public class AccessController : ControllerBase
 {
     private readonly IInventoryServices _inventoryServices;
-	public InventoryController(IInventoryServices inventoryServices)
+	public AccessController(IInventoryServices inventoryServices)
 	{
 		_inventoryServices = inventoryServices;
 	}

@@ -1,10 +1,12 @@
 using AuthImplementation.Model.Dtos.Request;
 using AuthImplementation.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace AuthImplementation.Controllers;
 
+[AllowAnonymous]
 [ApiController]
 [Route("[controller]")]
 public class AuthController : ControllerBase
