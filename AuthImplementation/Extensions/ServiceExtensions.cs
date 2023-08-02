@@ -2,6 +2,7 @@
 using AuthImplementation.Model.Entities;
 using AuthImplementation.Services.Implementations;
 using AuthImplementation.Services.Interfaces;
+using AuthImplementation.Services.JWT;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ public static class ServiceExtensions
     {
         services.AddScoped<IAuthServices, AuthServices>();
         services.AddScoped<IInventoryServices, InventoryServices>();
+        services.AddScoped<IJwtAuthenticate, JwtAuthenticate>();
         return services;
     }
 
