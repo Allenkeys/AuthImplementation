@@ -6,6 +6,6 @@ namespace AuthImplementation.Services.Interfaces;
 public interface IInventoryServices
 {
     Task<string> Create(CreateFruitRequest request);
-    Task<Fruit> GetInventoryAsync(string id);
+    Task<Fruit> GetInventoryAsync(int id);
     Task<IEnumerable<Fruit>> GetAllInventoryAsync();
 }

@@ -38,7 +38,7 @@ public class InventoryServices : IInventoryServices
         return fruits;
     }
 
-    public async Task<Fruit> GetInventoryAsync(string id)
+    public async Task<Fruit> GetInventoryAsync(int id)
     {
         var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false).SingleOrDefault();
         return fruit;

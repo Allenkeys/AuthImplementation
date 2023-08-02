@@ -1,6 +1,8 @@
-﻿using AuthImplementation.Services.Interfaces;
+﻿using AuthImplementation.Model.Dtos.Request;
+using AuthImplementation.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AuthImplementation.Controllers;
 
@@ -14,14 +16,24 @@ public class InventoryController : ControllerBase
 		_inventoryServices = inventoryServices;
 	}
 
-	[HttpGet("Get-Inventory", Name = "get-inventory")]
-	public async Task<IActionResult> Get(string id)
+	[HttpPost("Create-A-Fruit", Name = "create-a-fruit")]
+	[SwaggerOperation(Summary = "Create a new fruit")]
+	public async Task<IActionResult> Create(CreateFruitRequest request)
+	{
+		var response = await _inventoryServices.Create(request);
+		return Ok(response);
+	}
+
+	[HttpGet("Get-Inventory/{id:int}", Name = "get-inventory")]
+    [SwaggerOperation(Summary = "Get a fruit by Id")]
+    public async Task<IActionResult> Get(int id)
 	{
 		var response = await _inventoryServices.GetInventoryAsync(id);
 		return Ok(response);
 	}
 
     [HttpGet("Get-Inventories", Name = "get-inventories")]
+    [SwaggerOperation(Summary = "Get a collection of fruits")]
     public async Task<IActionResult> GetAll()
     {
         var response = await _inventoryServices.GetAllInventoryAsync();
