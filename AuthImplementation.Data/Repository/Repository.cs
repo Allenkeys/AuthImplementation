@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthImplementation.Data.Repository;
 
@@ -14,6 +15,14 @@ public class Repository<T> : IRepository<T> where T : class
     {
         _dbContext.Set<T>().Add(entity);
         return entity;
+    }
+
+    public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate, bool trackChanges)
+    {
+        var result = trackChanges 
+            ? _dbContext.Set<T>().Where(predicate)
+            : _dbContext.Set<T>().Where(predicate).AsNoTracking();
+        return result;
     }
 
     public IQueryable<T> GetAll(bool trackChanges)
