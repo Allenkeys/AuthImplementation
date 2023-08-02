@@ -1,4 +1,5 @@
 ﻿using AuthImplementation.Data.Context;
+using AuthImplementation.Data.Repository;
 using AuthImplementation.Model.Entities;
 using AuthImplementation.Services.Implementations;
 using AuthImplementation.Services.Interfaces;
@@ -15,6 +16,7 @@ public static class ServiceExtensions
         services.AddScoped<IAuthServices, AuthServices>();
         services.AddScoped<IInventoryServices, InventoryServices>();
         services.AddScoped<IJwtAuthenticate, JwtAuthenticate>();
+        services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
         return services;
     }
 

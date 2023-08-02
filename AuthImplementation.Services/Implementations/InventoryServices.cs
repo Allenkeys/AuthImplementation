@@ -1,16 +1,46 @@
-﻿using AuthImplementation.Services.Interfaces;
+﻿using AuthImplementation.Data.Repository;
+using AuthImplementation.Model.Dtos.Request;
+using AuthImplementation.Model.Entities;
+using AuthImplementation.Services.Interfaces;
 
 namespace AuthImplementation.Services.Implementations;
 
 public class InventoryServices : IInventoryServices
 {
-    public async Task<IEnumerable<string>> GetAllInventoryAsync()
+    private readonly IRepository<Fruit> _fruitRepo;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public InventoryServices(IUnitOfWork unitOfWork)
     {
-        throw new NotImplementedException();
+        _unitOfWork = unitOfWork;
+        _fruitRepo = unitOfWork.GetRepository<Fruit>();
     }
 
-    public async Task<string> GetInventoryAsync(string id)
+    public async Task<string> Create(CreateFruitRequest request)
     {
-        throw new NotImplementedException();
+        if(request == null) throw new ArgumentNullException(nameof(request));
+
+        var fruit = new Fruit
+        {
+            Name = request.Name,
+            Colour = request.Colour,
+            SizeTypeId = request.SizeTypeId,
+        };
+
+        var result = _fruitRepo.Create(fruit);
+
+        return $"{result.Name} has been created successfully";
+    }
+
+    public async Task<IEnumerable<Fruit>> GetAllInventoryAsync()
+    {
+        var fruits = _fruitRepo.GetAll(trackChanges: false);
+        return fruits;
+    }
+
+    public async Task<Fruit> GetInventoryAsync(string id)
+    {
+        var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false).SingleOrDefault();
+        return fruit;
     }
 }
