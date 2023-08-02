@@ -1,4 +1,5 @@
 ﻿using AuthImplementation.Model.Dtos.Request;
+using AuthImplementation.Model.Dtos.Response;
 using AuthImplementation.Model.Entities;
 
 namespace AuthImplementation.Services.Interfaces;
@@ -6,6 +7,6 @@ namespace AuthImplementation.Services.Interfaces;
 public interface IInventoryServices
 {
     Task<string> Create(CreateFruitRequest request);
-    Task<Fruit> GetInventoryAsync(int id);
-    Task<IEnumerable<Fruit>> GetAllInventoryAsync();
+    Task<FruitResponse> GetInventoryAsync(int id);
+    Task<IEnumerable<FruitResponse>> GetAllInventoryAsync();
 }

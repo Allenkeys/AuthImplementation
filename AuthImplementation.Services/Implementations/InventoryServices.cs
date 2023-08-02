@@ -1,6 +1,8 @@
 ﻿using AuthImplementation.Data.Repository;
 using AuthImplementation.Model.Dtos.Request;
+using AuthImplementation.Model.Dtos.Response;
 using AuthImplementation.Model.Entities;
+using AuthImplementation.Model.Enums;
 using AuthImplementation.Services.Interfaces;
 
 namespace AuthImplementation.Services.Implementations;
@@ -32,15 +34,27 @@ public class InventoryServices : IInventoryServices
         return $"{result.Name} has been created successfully";
     }
 
-    public async Task<IEnumerable<Fruit>> GetAllInventoryAsync()
+    public async Task<IEnumerable<FruitResponse>> GetAllInventoryAsync()
     {
-        var fruits = _fruitRepo.GetAll(trackChanges: false);
+        var fruits = _fruitRepo.GetAll(trackChanges: false).Select(x => new FruitResponse
+        {
+            Name = x.Name,
+            Colour = x.Colour,
+            Size = x.SizeTypeId.ToStringValue()
+        });
         return fruits;
     }
 
-    public async Task<Fruit> GetInventoryAsync(int id)
+    public async Task<FruitResponse> GetInventoryAsync(int id)
     {
-        var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false).SingleOrDefault();
+        var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false).Select(x => new FruitResponse
+        {
+            Name = x.Name,
+            Colour = x.Colour,
+            Size = x.SizeTypeId.ToStringValue()
+        })
+         .SingleOrDefault();
+
         return fruit;
     }
 }
