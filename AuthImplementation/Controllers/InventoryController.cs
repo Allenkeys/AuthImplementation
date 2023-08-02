@@ -29,7 +29,9 @@ public class InventoryController : ControllerBase
     public async Task<IActionResult> Get(int id)
 	{
 		var response = await _inventoryServices.GetInventoryAsync(id);
-		return Ok(response);
+        if (response == null)
+            return NotFound();
+        return Ok(response);
 	}
 
     [HttpGet("Get-Inventories", Name = "get-inventories")]
@@ -37,6 +39,8 @@ public class InventoryController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var response = await _inventoryServices.GetAllInventoryAsync();
+		if(response == null)
+			return NotFound();
         return Ok(response);
     }
 }

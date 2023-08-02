@@ -18,7 +18,7 @@ public class UnitOfWork<TContext> : IUnitOfWork<DbContext> where TContext : DbCo
 
         var type = typeof(TEntity);
         if(!_repositories.ContainsKey(type))
-            _repositories.Add(type, _context);
+            _repositories[type] = new Repository<TEntity>(_context);
 
         return (IRepository<TEntity>)_repositories[type];
     }
