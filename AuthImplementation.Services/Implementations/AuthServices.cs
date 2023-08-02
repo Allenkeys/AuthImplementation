@@ -11,11 +11,13 @@ namespace AuthImplementation.Services.Implementations;
 public class AuthServices : IAuthServices
 {
     private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IJwtAuthenticate _jwtAuthenticate;
-    public AuthServices(UserManager<User> userManager, IJwtAuthenticate jwtAuthenticate)
+    public AuthServices(UserManager<User> userManager, IJwtAuthenticate jwtAuthenticate, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _jwtAuthenticate = jwtAuthenticate;
+        _roleManager = roleManager;
     }
 
     public async Task<AuthResponse> LoginAsync(LoginRequest request)
@@ -64,6 +66,14 @@ public class AuthServices : IAuthServices
         IdentityResult result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
             throw new InvalidOperationException($"Failed to create user: {result.Errors.FirstOrDefault()!.Description}");
+
+        bool roleExists = await _roleManager.RoleExistsAsync(request.UserTypeId.ToStringValue());
+
+        if (!roleExists)
+        {
+            await _userManager.AddToRoleAsync(user, UserType.FrontOffice.ToStringValue());
+            return result;
+        }
 
         await _userManager.AddToRoleAsync(user, request.UserTypeId.ToStringValue());
 

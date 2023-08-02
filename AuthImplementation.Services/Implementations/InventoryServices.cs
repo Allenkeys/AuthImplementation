@@ -36,24 +36,30 @@ public class InventoryServices : IInventoryServices
 
     public async Task<IEnumerable<FruitResponse>> GetAllInventoryAsync()
     {
-        var fruits = _fruitRepo.GetAll(trackChanges: false).Select(x => new FruitResponse
-        {
-            Name = x.Name,
-            Colour = x.Colour,
-            Size = x.SizeTypeId.ToStringValue()
-        });
+        var fruits = _fruitRepo.GetAll(trackChanges: false)
+            .Select(x => new FruitResponse
+            {
+                Name = x.Name,
+                Colour = x.Colour,
+                Size = x.SizeTypeId.ToStringValue()
+            });
+
+        if (fruits is null)
+            return Enumerable.Empty<FruitResponse>();
+
         return fruits;
     }
 
     public async Task<FruitResponse> GetInventoryAsync(int id)
     {
-        var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false).Select(x => new FruitResponse
-        {
-            Name = x.Name,
-            Colour = x.Colour,
-            Size = x.SizeTypeId.ToStringValue()
-        })
-         .SingleOrDefault();
+        var fruit = _fruitRepo.FindBy(x => x.Id.Equals(id), trackChanges: false)
+            .Select(x => new FruitResponse
+            {
+                Name = x.Name,
+                Colour = x.Colour,
+                Size = x.SizeTypeId.ToStringValue()
+            })
+             .SingleOrDefault();
 
         return fruit;
     }
